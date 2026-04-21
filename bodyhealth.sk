@@ -1,0 +1,185 @@
+# BodyHealth SkriptAddon - Test Script
+# Commands: /bh-test <test>, /bh-status, /bh-reset
+# Events:   automatic logging on health/state changes
+
+# -------------------------------------------------------
+# STATUS: show all body part health and states
+# -------------------------------------------------------
+command /bh-status:
+    trigger:
+        if body health is not enabled for player:
+            send "BodyHealth is disabled in this world."
+            stop
+
+        send "=== Body Health Status ==="
+        loop head, torso, left arm, right arm, left leg, right leg, left foot and right foot:
+            set {_part} to loop-value
+            set {_hp}    to body health of {_part} of player
+            set {_max}   to maximum body part health of {_part} of player
+            set {_state} to body part state of {_part} of player
+            send "  %{_part}%: %{_hp}%%%  (max %{_max}%)  [%{_state}%]"
+
+        send "=== Abilities ==="
+
+        if player can jump:
+            send "  Can jump:   yes"
+        else:
+            send "  Can jump:   no"
+
+        if player can walk:
+            send "  Can walk:   yes"
+        else:
+            send "  Can walk:   no"
+
+        if player can sprint:
+            send "  Can sprint: yes"
+        else:
+            send "  Can sprint: no"
+
+        if player can interact with main hand:
+            send "  Main hand:  yes"
+        else:
+            send "  Main hand:  no"
+
+        if player can interact with off hand:
+            send "  Off hand:   yes"
+        else:
+            send "  Off hand:   no"
+
+        if player is vanished:
+            send "  Vanished:   yes"
+        else:
+            send "  Vanished:   no"
+
+
+# -------------------------------------------------------
+# RESET: fully heal all body parts
+# -------------------------------------------------------
+command /bh-reset:
+    trigger:
+        fully heal player
+        send "All body parts fully healed."
+
+
+# -------------------------------------------------------
+# TEST COMMANDS
+# -------------------------------------------------------
+command /bh-test <text>:
+    trigger:
+
+        # --- heal ---
+        if arg-1 is "heal-all":
+            heal player by 30
+            send "Healed all body parts by 30."
+
+        else if arg-1 is "heal-head":
+            heal head of player by 50
+            send "Healed head by 50."
+
+        else if arg-1 is "heal-full-leg":
+            fully heal left leg of player
+            send "Fully healed left leg."
+
+        # --- direct damage ---
+        else if arg-1 is "dmg-all":
+            directly damage player by 20
+            send "Directly damaged all body parts by 20."
+
+        else if arg-1 is "dmg-torso":
+            directly damage torso of player by 40
+            send "Directly damaged torso by 40."
+
+        # --- config damage ---
+        else if arg-1 is "dmg-fall":
+            damage player by 15 with damage cause fall
+            send "Applied 15 fall damage (config-based)."
+
+        else if arg-1 is "dmg-fire-arm":
+            damage right arm of player by 25 with damage cause fire
+            send "Applied 25 fire damage to right arm (config-based)."
+
+        # --- set health ---
+        else if arg-1 is "set-all":
+            set body health of player to 50
+            send "Set all body parts to 50%%."
+
+        else if arg-1 is "set-head":
+            set body health of head of player to 10
+            send "Set head health to 10%%."
+
+        # --- expression set/add/remove ---
+        else if arg-1 is "expr-set":
+            set body health of right leg of player to 75
+            send "Expression SET: right leg -> 75%%"
+
+        else if arg-1 is "expr-add":
+            add 25 to body health of left foot of player
+            send "Expression ADD: healed left foot by 25."
+
+        else if arg-1 is "expr-remove":
+            remove 20 from body health of right foot of player
+            send "Expression REMOVE: damaged right foot by 20."
+
+        # --- validate effects ---
+        else if arg-1 is "validate":
+            validate body health effects of player
+            send "Effects validated."
+
+        # --- break parts for state/ability testing ---
+        else if arg-1 is "break-legs":
+            set body health of left leg of player to 0
+            set body health of right leg of player to 0
+            send "Both legs set to 0%%."
+
+        else if arg-1 is "break-arms":
+            set body health of left arm of player to 0
+            set body health of right arm of player to 0
+            send "Both arms set to 0%%."
+
+        else:
+            send "Unknown test. Options:"
+            send "  heal-all  heal-head  heal-full-leg"
+            send "  dmg-all  dmg-torso  dmg-fall  dmg-fire-arm"
+            send "  set-all  set-head"
+            send "  expr-set  expr-add  expr-remove"
+            send "  validate  break-legs  break-arms"
+
+
+# -------------------------------------------------------
+# EVENT: body part health change
+# -------------------------------------------------------
+on body part health change:
+    set {_player} to event-player
+    set {_part}   to event-bodypart
+    set {_new}    to event-number
+    set {_old}    to past event-number
+    set {_diff}   to {_new} - {_old}
+    if {_diff} < 0:
+        set {_diff} to {_diff} * -1
+    if {_diff} >= 10:
+        send "[BodyHealth] %{_part}%: %{_old}%%% -> %{_new}%%%" to {_player}
+
+on body part health change of head:
+    if event-number <= 20:
+        send "&cWarning: Head critically damaged (%event-number%%%)" to event-player
+
+
+# -------------------------------------------------------
+# EVENT: body part state change
+# -------------------------------------------------------
+on body part state change:
+    set {_player} to event-player
+    set {_part}   to event-bodypart
+    set {_new}    to event-bodypartstate
+    set {_old}    to past event-bodypartstate
+    if {_new} is set:
+        if {_old} is set:
+            send "[BodyHealth] %{_part}% state: %{_old}% -> %{_new}%" to {_player}
+
+on body part state change of left leg:
+    if event-bodypartstate is broken:
+        send "&4Your left leg is broken!" to event-player
+
+on body part state change of right leg:
+    if event-bodypartstate is broken:
+        send "&4Your right leg is broken!" to event-player
