@@ -1,4 +1,6 @@
-# BodyHealth SkriptAddon — AI-Generated Documentation
+## 🛈 This file was written by an LLM. I might replace it with proper (human-written) documentation in the future, when I have the time to do so.
+
+# BodyHealth SkriptAddon Docs
 
 Exposes the [BodyHealth](https://modrinth.com/plugin/bodyhealth) API to [Skript](https://modrinth.com/plugin/skript).
 
@@ -256,18 +258,18 @@ if player is vanished:
 
 ### Body Part Health Change
 Fired whenever the health percentage of any body part of any player changes.  
-**Cancellable:** yes — `cancel event` will prevent the health change.
+**Cancellable:** yes, `cancel event` will prevent the health change.
 
 ```vb
 [on] body part health change [of %-bodypart%]
 ```
 
-| Event value | Type | Description |
-|---|---|---|
-| `event-player` | player | The affected player |
-| `event-bodypart` | bodypart | The body part that changed |
-| `event-number` | number | The **new** health value (percent) — settable |
-| `past event-number` | number | The **old** health value (percent) |
+| Event value | Type | Description                                  |
+|---|---|----------------------------------------------|
+| `event-player` | player | The affected player                          |
+| `event-bodypart` | bodypart | The body part that changed                   |
+| `event-number` | number | The **new** health value (percent), settable |
+| `past event-number` | number | The **old** health value (percent)           |
 
 > Setting `event-number` inside the event modifies the incoming health value before it is applied.
 
@@ -279,7 +281,7 @@ on body part health change:
             send "&cCritical head damage!" to event-player
 
 on body part health change of torso:
-    # Cap torso damage — never let it drop below 10%
+    # Cap torso damage (never let it drop below 10%)
     if event-number < 10:
         set event-number to 10
 ```

@@ -56,13 +56,13 @@ public class EvtBodyPartStateChange extends SkriptEvent {
                 .time(EventValue.Time.NOW)
                 .build());
 
-        // New state (current/default time) — may be null on join/leave
+        // New state (current/default time), may be null on join/leave
         eventRegistry.register(EventValue.builder(BodyPartStateChangeEvent.class, BodyPartState.class)
                 .getter(BodyPartStateChangeEvent::getNewState)
                 .time(EventValue.Time.NOW)
                 .build());
 
-        // Old state (past time) — may be null on join/leave
+        // Old state (past time), may be null on join/leave
         eventRegistry.register(EventValue.builder(BodyPartStateChangeEvent.class, BodyPartState.class)
                 .getter(BodyPartStateChangeEvent::getOldState)
                 .time(EventValue.Time.PAST)

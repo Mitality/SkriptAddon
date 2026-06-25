@@ -1,5 +1,4 @@
+# Modrinth requires this
+main: null
 name: SkriptAddon
-version: '1.0.0'
-main: mitality.skriptAddon.Main
-api-version: '1.21'
-depend: [BodyHealth, Skript]
+version: null

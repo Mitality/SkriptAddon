@@ -2,6 +2,8 @@ package mitality.skriptAddon;
 
 import bodyhealth.api.addons.AddonInfo;
 import bodyhealth.api.addons.BodyHealthAddon;
+import bodyhealth.listeners.UpdateNotifyListener;
+import bodyhealth.util.UpdateChecker;
 import ch.njol.skript.Skript;
 import mitality.skriptAddon.elements.conditions.*;
 import mitality.skriptAddon.elements.effects.*;
@@ -16,7 +18,7 @@ import org.skriptlang.skript.registration.SyntaxRegistry;
 
 @AddonInfo(
         name = "SkriptAddon",
-        description = "Use BodyHealth with Skript",
+        description = "Relays BodyHealth's API to Skript",
         version = "1.0.0",
         author = "Mitality"
 )
@@ -67,6 +69,15 @@ public final class Main extends BodyHealthAddon {
         EvtBodyPartStateChange.register(registry, eventRegistry);
 
         getAddonDebug().log("SkriptAddon v" + getAddonInfo().version() + " enabled.");
+
+        UpdateChecker updateChecker = new UpdateChecker(
+                "SkriptAddon",
+                "bodyhealthaddon-skriptaddon",
+                Main.getInstance().getAddonInfo().version()
+        ).checkNow();
+        if (bodyhealth.config.Config.update_check_interval > 0) updateChecker
+                .checkEveryXHours(bodyhealth.config.Config.update_check_interval);
+        registerListener(new UpdateNotifyListener(updateChecker));
     }
 
     @Override

@@ -15,6 +15,7 @@
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+._*
 
 # Java / JVM
 *.class
@@ -53,33 +54,30 @@ dependency-reduced-pom.xml
 # Gradle
 .gradle/
 build/
-!gradle/wrapper/gradle-wrapper.jar
 gradle-app.setting
-gradlew.bat
-gradlew
+!gradle/wrapper/gradle-wrapper.jar
 
 # IntelliJ IDEA
 .idea/
 *.iml
 *.iws
 *.ipr
-out/
 
 # Eclipse
 .project
 .classpath
 .settings/
-bin/
 
 # VS Code
 .vscode/
 .history/
 
+# Zed editor
+.zed/
+
 # NetBeans
 nbproject/private/
-build/
 nbbuild/
-dist/
 nbdist/
 .nb-gradle/
 
@@ -88,6 +86,10 @@ nbdist/
 .prompt/
 .prompts/
 *.prompt
+
+# Claude / Anthropic
+CLAUDE.md
+.claude/
 
 # Cursor IDE
 .cursor/
@@ -100,14 +102,24 @@ copilot/
 # Codeium
 .codeium/
 
-# Tabnine
-.tabnine/
+# Windsurf / Codeium IDE
+.windsurf/
+
+# Roo Code
+.roo/
 
 # Continue.dev
 .continue/
+.continue-cache/
+
+# Tabnine
+.tabnine/
 
 # Aider
 .aider*
+
+# Augment
+.augment/
 
 # ChatGPT local tools / logs
 .chatgpt/
@@ -123,6 +135,9 @@ models/
 *.vectorstore
 *.faiss
 *.index
+*.chat.json
+*.conversation
+*.session
 
 # Environment / Secrets
 .env
@@ -141,24 +156,62 @@ coverage/
 *.coverage
 test-output/
 
-# Node
+# Node / JavaScript
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Docker
+# Bun
+.bun/
+
+# Turborepo
+.turbo/
+
+# Next.js
+.next/
+
+# SvelteKit
+.svelte-kit/
+
+# Nuxt
+.nuxt/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Rust
+Cargo.lock
+
+# Go
+.coverprofile
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Docker / Containers
 .docker/
+.devcontainer/
 docker-compose.override.yml
 
-# Misc
+# Direnv
+.direnv/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Archives
 *.zip
 *.tar.gz
 *.rar
-
-# Mac resource fork
-._*
 
 # Allow important wrappers
 !gradle/wrapper/gradle-wrapper.jar
